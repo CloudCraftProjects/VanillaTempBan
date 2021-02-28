@@ -49,16 +49,16 @@ public class BannedLoginListener implements Listener {
                 remaining -= TimeUnit.MILLISECONDS.convert(1, TimeUnit.SECONDS);
             }
 
-            if (days > 0) remainingText.append(days).append("d");
-            if (hours > 0) remainingText.append(hours).append("h");
-            if (minutes > 0) remainingText.append(minutes).append("min");
-            if (seconds > 0) remainingText.append(seconds).append("s");
+            if (days > 0) remainingText.append(days).append("d ");
+            if (hours > 0) remainingText.append(hours).append("h ");
+            if (minutes > 0) remainingText.append(minutes).append("min ");
+            if (seconds > 0) remainingText.append(seconds).append("s ");
         }
 
         event.setKickMessage("§cDu bist vom Server gebannt!\n" +
                 "§cModerator: §f" + entry.getSource() + "\n" +
                 "§cSeit: §f" + new SimpleDateFormat("HH:mm:ss dd.MM.yyyy").format(entry.getCreated()) + "\n" +
-                (remainingText.length() == 0 ? "" : "§cBis: §f" + remainingText + "\n") +
+                (remainingText.length() == 0 ? "" : "§cVerbleibend: §f" + remainingText.toString().trim() + "\n") +
                 "§cGrund: §f" + entry.getReason());
     }
 }
