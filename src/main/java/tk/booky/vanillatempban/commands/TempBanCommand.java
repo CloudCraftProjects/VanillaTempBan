@@ -4,7 +4,6 @@ package tk.booky.vanillatempban.commands;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.GreedyStringArgument;
-import dev.jorel.commandapi.arguments.TimeArgument;
 import dev.jorel.commandapi.exceptions.WrapperCommandSyntaxException;
 import dev.jorel.commandapi.executors.CommandExecutor;
 import org.bukkit.Bukkit;
@@ -13,6 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import tk.booky.vanillatempban.arguments.OfflinePlayerArgument;
+import tk.booky.vanillatempban.arguments.RealTimeArgument;
 
 import java.util.Date;
 
@@ -22,15 +22,15 @@ public class TempBanCommand extends CommandAPICommand implements CommandExecutor
         super("tempban");
 
         withPermission("minecraft.command.tempban");
-        withArguments(new OfflinePlayerArgument("player"), new TimeArgument("time"), new GreedyStringArgument("reason"));
+        withArguments(new OfflinePlayerArgument("player"), new RealTimeArgument("time"), new GreedyStringArgument("reason"));
 
         executes(this);
     }
 
     @Override
     public void run(CommandSender sender, Object[] args) throws WrapperCommandSyntaxException {
-        long time = System.currentTimeMillis() + ((int) args[0]) * 50;
-        OfflinePlayer player = (OfflinePlayer) args[1];
+        OfflinePlayer player = (OfflinePlayer) args[0];
+        long time = System.currentTimeMillis() + ((int) args[1]);
         String reason = (String) args[2], senderName = sender instanceof ConsoleCommandSender ? "Server" : sender.getName();
 
         if (time <= System.currentTimeMillis()) {
