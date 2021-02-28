@@ -40,7 +40,7 @@ public class TempBanCommand extends CommandAPICommand implements CommandExecutor
             if (player.isOnline() && player.getPlayer() != null) player.getPlayer().kickPlayer("You were banned from this server");
 
             sender.sendMessage("Banned " + player.getName() + ": " + reason);
-            Bukkit.broadcast("§o" + ChatColor.stripColor("[" + senderName + ": Banned " + player.getName() + ": " + reason + "]"), "minecraft.admin.command_feedback");
+            Bukkit.broadcast("§7§o" + ChatColor.stripColor("[" + senderName + ": Banned " + player.getName() + ": " + reason + "]"), "minecraft.admin.command_feedback");
         }
     }
 }
