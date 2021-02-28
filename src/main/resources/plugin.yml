@@ -1,0 +1,7 @@
+name: VanillaTempBan
+version: @version@
+main: tk.booky.vanillatempban.VanillaTempBanMain
+api-version: 1.16
+prefix: VTB
+authors: [ booky10 ]
+website: https://booky.tk/
