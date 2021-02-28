@@ -18,7 +18,7 @@ public class OfflinePlayerArgument extends CustomArgument<OfflinePlayer> {
             OfflinePlayer player = Bukkit.getOfflinePlayerIfCached(input);
 
             if (player == null) {
-                throw new CustomArgumentException("The player named %input% could not be found!");
+                throw new CustomArgumentException(new MessageBuilder("The player named ").appendArgInput().append(" could not be found!"));
             } else {
                 return player;
             }
