@@ -22,7 +22,7 @@ public class TempBanCommand extends CommandAPICommand implements CommandExecutor
         super("tempban");
 
         withPermission("minecraft.command.tempban");
-        withArguments(new TimeArgument("time"), new OfflinePlayerArgument("player"), new GreedyStringArgument("reason"));
+        withArguments(new OfflinePlayerArgument("player"), new TimeArgument("time"), new GreedyStringArgument("reason"));
 
         executes(this);
     }
