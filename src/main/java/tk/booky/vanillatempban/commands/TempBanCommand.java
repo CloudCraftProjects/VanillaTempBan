@@ -30,7 +30,7 @@ public class TempBanCommand extends CommandAPICommand implements CommandExecutor
     @Override
     public void run(CommandSender sender, Object[] args) throws WrapperCommandSyntaxException {
         OfflinePlayer player = (OfflinePlayer) args[0];
-        long time = System.currentTimeMillis() + ((int) args[1]);
+        long time = System.currentTimeMillis() + (long) args[1];
         String reason = (String) args[2], senderName = sender instanceof ConsoleCommandSender ? "Server" : sender.getName();
 
         if (time <= System.currentTimeMillis()) {
