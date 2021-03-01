@@ -4,11 +4,16 @@ package tk.booky.vanillatempban.arguments;
 import dev.jorel.commandapi.arguments.CustomArgument;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
+
+import java.util.function.Function;
 
 public class OfflinePlayerArgument extends CustomArgument<OfflinePlayer> {
 
     public OfflinePlayerArgument(String nodeName) {
         super(nodeName, new OfflinePlayerArgumentParser(), false);
+        overrideSuggestions(commandSender -> Bukkit.getOnlinePlayers().stream().map((Function<Player, String>) HumanEntity::getName).toArray(String[]::new));
     }
 
     static class OfflinePlayerArgumentParser implements CustomArgument.CustomArgumentParser<OfflinePlayer> {

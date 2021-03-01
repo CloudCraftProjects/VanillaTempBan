@@ -9,6 +9,7 @@ public class RealTimeArgument extends CustomArgument<Long> {
 
     public RealTimeArgument(String nodeName) {
         super(nodeName, new RealTimeArgumentParser(), false);
+        overrideSuggestions("y", "d", "h", "m", "s");
     }
 
     static class RealTimeArgumentParser implements CustomArgumentParser<Long> {
