@@ -11,10 +11,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import tk.booky.vanillatempban.arguments.OfflinePlayerArgument;
 import tk.booky.vanillatempban.arguments.RealTimeArgument;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class TempBanCommand extends CommandAPICommand implements CommandExecutor {
 
@@ -30,17 +32,35 @@ public class TempBanCommand extends CommandAPICommand implements CommandExecutor
     @Override
     public void run(CommandSender sender, Object[] args) throws WrapperCommandSyntaxException {
         OfflinePlayer player = (OfflinePlayer) args[0];
-        long time = System.currentTimeMillis() + (long) args[1];
-        String reason = (String) args[2], senderName = sender instanceof ConsoleCommandSender ? "Server" : sender.getName();
+        long time = (long) args[1];
+        String reason = (String) args[2];
+        String senderName = sender instanceof ConsoleCommandSender ? "Server" : sender.getName();
 
-        if (time <= System.currentTimeMillis()) {
+        if (time <= 0) {
             CommandAPI.fail("The time can't be negative or zero!");
         } else {
-            player.banPlayer(reason, new Date(time), senderName, false);
-            if (player.isOnline() && player.getPlayer() != null) player.getPlayer().kickPlayer("You were banned from this server");
+            long days = TimeUnit.DAYS.convert(time, TimeUnit.MILLISECONDS);
+            boolean permitted = false;
 
-            sender.sendMessage("Banned " + player.getName() + ": " + reason);
-            Bukkit.broadcast("§7§o" + ChatColor.stripColor("[" + senderName + ": Banned " + player.getName() + ": " + reason + "]"), "minecraft.admin.command_feedback");
+            for (int i = 1; i <= days; i++) {
+                if (!sender.hasPermission("minecraft.command.tempban." + i)) continue;
+                permitted = true;
+                break;
+            }
+
+            if (permitted) {
+                player.banPlayer(reason, new Date(System.currentTimeMillis() + time), senderName, false);
+                if (player.isOnline() && player.getPlayer() != null) player.getPlayer().kickPlayer("You were banned from this server");
+
+                sender.sendMessage("Banned " + player.getName() + ": " + reason);
+                for (Player target : Bukkit.getOnlinePlayers()) {
+                    if (!target.hasPermission("minecraft.admin.command_feedback")) continue;
+                    if (sender instanceof Player && ((Player) sender).getUniqueId().equals(target.getUniqueId())) continue;
+                    target.sendMessage("§7§o[" + senderName + ": Banned " + player.getName() + ": " + ChatColor.stripColor(reason) + "]");
+                }
+            } else {
+                CommandAPI.fail("Dazu hast du keine Rechte!");
+            }
         }
     }
 }
