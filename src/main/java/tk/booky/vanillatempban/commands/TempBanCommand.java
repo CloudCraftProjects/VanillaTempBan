@@ -42,10 +42,14 @@ public class TempBanCommand extends CommandAPICommand implements CommandExecutor
             long days = TimeUnit.DAYS.convert(time, TimeUnit.MILLISECONDS);
             boolean permitted = false;
 
-            for (int i = 1; i <= days; i++) {
-                if (!sender.hasPermission("minecraft.command.tempban." + i)) continue;
+            if (days < 1) {
                 permitted = true;
-                break;
+            } else {
+                for (int i = 1; i <= days; i++) {
+                    if (!sender.hasPermission("minecraft.command.tempban." + i)) continue;
+                    permitted = true;
+                    break;
+                }
             }
 
             if (permitted) {
